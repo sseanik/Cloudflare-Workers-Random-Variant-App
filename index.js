@@ -51,6 +51,23 @@ class colourRewriter {
   }
 }
 
+// HTMLWriter that parses and transforms HTML
+async function customisePage(response, colour) {
+  return await new HTMLRewriter()
+    .on('title', new TitleRewriter('Favourite Colour Picker'))
+    .on('h1#title', new TitleRewriter(`${colour} Variant`))
+    .on('p#description', new TitleRewriter(`Your new favourite colour is 
+      ${colour}!`))
+    .on('a#url', new TitleRewriter('To my GitHub'))
+    .on('a#url', new AttributeRewriter('https://github.com/sseanik'))
+    // Extra colouring for fun
+    .on('div[class*="bg-gray"]', new colourRewriter(colour))
+    .on('div[class*="bg-green"]', new colourRewriter(colour))
+    .on('svg[class*="text-green"]', new colourRewriter(colour))
+    .on('h1#title', new colourRewriter(colour))
+    .transform(response);
+}
+
 // Obtain the index value from a cookie if a valid cookie is present
 function getVariantFromCookie(cookie) {
   if (!cookie) {
@@ -68,23 +85,6 @@ function createCookie(index) {
   let date = new Date(); 
   date.setMinutes(date.getMinutes() + 60);
   return `variant=${index}; Expires=${date};`;
-}
-
-// HTMLWriter that parses and transforms HTML
-async function customisePage(response, colour) {
-  return await new HTMLRewriter()
-    .on('title', new TitleRewriter('Favourite Colour Picker'))
-    .on('h1#title', new TitleRewriter(`${colour} Variant`))
-    .on('p#description', new TitleRewriter(`Your new favourite colour is 
-      ${colour}!`))
-    .on('a#url', new TitleRewriter('To my GitHub'))
-    .on('a#url', new AttributeRewriter('https://github.com/sseanik'))
-    // Extra colouring for fun
-    .on('div[class*="bg-gray"]', new colourRewriter(colour))
-    .on('div[class*="bg-green"]', new colourRewriter(colour))
-    .on('svg[class*="text-green"]', new colourRewriter(colour))
-    .on('h1#title', new colourRewriter(colour))
-    .transform(response);
 }
 
 // Event Handler that returns a custom request object
@@ -106,15 +106,14 @@ async function handleRequest(request) {
   if (index !== null) {
     response = await fetch(variants[index]);
     if (response.status !== 200) {
-      return await new Response(`Failed to obtain Variant ${index}`, 
-        {status: 500});
+      return new Response(`Failed to obtain Variant ${index}`, {status: 500});
     }
   } else {
     // Randomise variant index choice (roughly evenly distributed)
     index = Math.random() < 0.5 ? 0 : 1;
     response = await fetch(variants[index]);
     if (response.status !== 200) {
-      return await new Response(`Failed to obtain Variant ${index}`, 
+      return new Response(`Failed to obtain Variant ${index}`, 
         {status: 500});
     }
     // Create a new cookie to persist with variant index
