@@ -106,14 +106,14 @@ async function handleRequest(request) {
   if (index !== null) {
     response = await fetch(variants[index]);
     if (response.status !== 200) {
-      return new Response(`Failed to obtain Variant ${index}`, {status: 500});
+      return new Response(`Failed to obtain Variant ${index + 1}`, {status: 500});
     }
   } else {
     // Randomise variant index choice (roughly evenly distributed)
     index = Math.random() < 0.5 ? 0 : 1;
     response = await fetch(variants[index]);
     if (response.status !== 200) {
-      return new Response(`Failed to obtain Variant ${index}`, 
+      return new Response(`Failed to obtain Variant ${index + 1}`, 
         {status: 500});
     }
     // Create a new cookie to persist with variant index
