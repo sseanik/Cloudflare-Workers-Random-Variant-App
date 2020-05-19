@@ -1,4 +1,4 @@
-# Cloudflare Workers Full-Stack App
+# Cloudflare Workers Random Variant App
 
 ### Deployed Project: https://intern-proj.seanik.workers.dev
 
