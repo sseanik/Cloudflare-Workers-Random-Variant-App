@@ -1,4 +1,4 @@
-# Cloudflare Workers Internship Application: Full-Stack
+# Cloudflare Workers Full-Stack Application
 
 ### Deployed Project: https://intern-proj.seanik.workers.dev
 
