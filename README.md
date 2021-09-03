@@ -1,6 +1,6 @@
 # Cloudflare Workers Random Variant App
 
-### Deployed Project: https://intern-proj.seanik.workers.dev
+### [Live Demo](https://intern-proj.seanik.workers.dev)
 
 ## What is it?
 
